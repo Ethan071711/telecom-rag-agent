@@ -1,0 +1,16 @@
+# Python 3.10–3.13（在 3.13 上测试）。以下是测试通过的版本。
+# Windows 上 pip 默认安装 CPU 版 PyTorch，足够运行向量检索、重排和离线基线；
+# 想用本地 GPU 跑 Qwen（LLM_PROVIDER=hf）时，先按 README 安装 CUDA 版 PyTorch。
+torch>=2.4
+numpy>=1.26
+faiss-cpu==1.15.1
+sentence-transformers==6.1.0
+transformers==5.20.1
+accelerate==1.15.0
+jieba==0.42.1
+rank-bm25==0.2.2
+openai==3.35.1
+anthropic==1.15.0
+python-dotenv==1.2.4
+gradio==6.30.0
+pytest==9.1.1

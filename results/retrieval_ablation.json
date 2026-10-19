@@ -1,0 +1,55 @@
+{
+  "run_at": "2026-10-19T16:22:08",
+  "embed_model": "BAAI/bge-small-zh-v1.5",
+  "rerank_model": "BAAI/bge-reranker-base",
+  "num_questions": 34,
+  "k": 5,
+  "modes": {
+    "dense": {
+      "Recall@1": 0.9117647058823529,
+      "Recall@3": 1,
+      "Recall@5": 1,
+      "MRR": 0.9558823529411765
+    },
+    "bm25": {
+      "Recall@1": 0.8529411764705882,
+      "Recall@3": 0.9705882352941176,
+      "Recall@5": 0.9705882352941176,
+      "MRR": 0.8921568627450981
+    },
+    "hybrid": {
+      "Recall@1": 0.9117647058823529,
+      "Recall@3": 0.9705882352941176,
+      "Recall@5": 1,
+      "MRR": 0.9470588235294117
+    },
+    "hybrid_rerank": {
+      "Recall@1": 0.8823529411764706,
+      "Recall@3": 1,
+      "Recall@5": 1,
+      "MRR": 0.9362745098039216
+    }
+  },
+  "top_rerank_score_by_type": {
+    "kb": {
+      "min": 0.582,
+      "median": 0.991,
+      "max": 1.0
+    },
+    "tool": {
+      "min": 0.844,
+      "median": 0.983,
+      "max": 0.999
+    },
+    "multi_turn": {
+      "min": 0.984,
+      "median": 0.996,
+      "max": 1.0
+    },
+    "unanswerable": {
+      "min": 0.049,
+      "median": 0.522,
+      "max": 0.953
+    }
+  }
+}
