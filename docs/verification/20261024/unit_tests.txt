@@ -1,0 +1,6 @@
+2026-10-24
+LLM_PROVIDER=offline; HF_HUB_OFFLINE=1; TRANSFORMERS_OFFLINE=1
+python -m pytest -q
+...................................... [100%]
+38 passed in 15.72s
+Python implementation unchanged from local base commit c2ba01c.

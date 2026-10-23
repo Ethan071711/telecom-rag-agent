@@ -1,0 +1,1366 @@
+{
+  "run_at": "2026-10-24T00:20:39",
+  "llm": "offline:rule-based",
+  "embed_model": "BAAI/bge-small-zh-v1.5",
+  "rerank_model": "BAAI/bge-reranker-base",
+  "top_k": 4,
+  "min_rerank_score": 0.05,
+  "metrics": {
+    "num_questions": 49,
+    "answer_accuracy": 0.7959183673469388,
+    "citation_accuracy": 0.9411764705882353,
+    "citation_precision": 0.8676470588235294,
+    "tool_accuracy": 1.0,
+    "unsupported_rate": 0.061224489795918366,
+    "refusal_accuracy": 0.5,
+    "false_refusal_rate": 0.0,
+    "avg_latency_s": 1.4189795918367347,
+    "avg_llm_calls": 1.183673469387755,
+    "accuracy_by_type": {
+      "kb": {
+        "n": 31,
+        "accuracy": 0.8709677419354839
+      },
+      "tool": {
+        "n": 8,
+        "accuracy": 1
+      },
+      "multi_turn": {
+        "n": 4,
+        "accuracy": 0.25
+      },
+      "unanswerable": {
+        "n": 6,
+        "accuracy": 0.5
+      }
+    }
+  },
+  "details": [
+    {
+      "id": "kb01",
+      "type": "kb",
+      "turns": [
+        "我想把号码转到别的运营商，号码要用多久才能转？"
+      ],
+      "answer": "号码已完成实名登记，申请人为机主本人[1]。号码在青禾通信的在网时长满 120 天[1]。",
+      "reference": "号码在青禾通信的在网时长需满120天才能携出。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "05_number_portability"
+      ],
+      "gold_docs": [
+        "05_number_portability"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我想把号码转到别的运营商，号码要用多久才能转？",
+      "latency_s": 1.2,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb02",
+      "type": "kb",
+      "turns": [
+        "携号转网的授权码有效期是多久？"
+      ],
+      "answer": "在青禾通信 App「我的—携号转网」中查询携转资格[1]。资格校验通过后申请授权码，授权码通过短信下发，有效期为 72 小时，过期需要重新申请[1]。",
+      "reference": "授权码有效期为72小时，过期需要重新申请。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "05_number_portability"
+      ],
+      "gold_docs": [
+        "05_number_portability"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "携号转网的授权码有效期是多久？",
+      "latency_s": 1.51,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb03",
+      "type": "kb",
+      "turns": [
+        "套外流量费每个月最多收多少？封顶以后还能上网吗？"
+      ],
+      "answer": "为避免产生高额流量费，套外流量费实行月封顶：当月套外流量费累计达到 150 元后不再收取套外流量费，当月剩余时间网速降至 1Mbps，次月 1 日自动恢复正常网速[1]。当月套外流量费达到封顶后网速会降至 1Mbps，这时无论是否在 5G 覆盖区都会限速[2]。",
+      "reference": "套外流量费每月封顶150元；封顶后仍可上网，但当月剩余时间网速降至1Mbps，次月1日恢复。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "02_overage_billing",
+        "18_5g_network"
+      ],
+      "gold_docs": [
+        "02_overage_billing"
+      ],
+      "citation_hit": true,
+      "citation_precision": 0.5,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "套外流量费每个月最多收多少？封顶以后还能上网吗？",
+      "latency_s": 1.79,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb04",
+      "type": "kb",
+      "turns": [
+        "我想把套餐换成便宜一点的，什么时候生效？"
+      ],
+      "answer": "降档只能选择次月生效，即从次月 1 日起按新套餐计费，当月仍按原套餐执行[1]。立即生效：当月按新套餐收取全额月费，新套餐内的流量和通话当月足额发放，原套餐未使用的资源不再保留[2]。",
+      "reference": "降档只能次月生效，从次月1日起按新套餐计费。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "03_plan_change",
+        "03_plan_change"
+      ],
+      "gold_docs": [
+        "03_plan_change"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我想把套餐换成便宜一点的，什么时候生效？",
+      "latency_s": 1.79,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb05",
+      "type": "kb",
+      "turns": [
+        "一个月可以改几次套餐？"
+      ],
+      "answer": "每个自然月只能办理 1 次套餐变更，申请提交后当月不可撤销[1]。合约期内不能降档到低于合约约定档位的套餐，详见《合约机与违约金说明》[1]。",
+      "reference": "每个自然月只能办理1次套餐变更。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "03_plan_change"
+      ],
+      "gold_docs": [
+        "03_plan_change"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "一个月可以改几次套餐？",
+      "latency_s": 1.66,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb06",
+      "type": "kb",
+      "turns": [
+        "10GB的流量加油包多少钱？有效期多久？"
+      ],
+      "answer": "| 流量包 | 价格 | 有效期 |[1]。| 10GB 加油包 | 30元 | 当月有效，月底失效 |[1]。",
+      "reference": "10GB加油包30元，当月有效，月底失效。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "04_data_packs"
+      ],
+      "gold_docs": [
+        "04_data_packs"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "10GB的流量加油包多少钱？有效期多久？",
+      "latency_s": 1.74,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb07",
+      "type": "kb",
+      "turns": [
+        "加油包当月没用完，能结转到下个月吗？"
+      ],
+      "answer": "当月未用完的套餐内国内通用流量可以结转到次月，结转流量在次月月底前有效[1]。加油包、7天包、日租包以及校园定向流量都不能结转[1]。",
+      "reference": "不能。加油包、7天包、日租包都不能结转，只有套餐内通用流量可以结转。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "04_data_packs"
+      ],
+      "gold_docs": [
+        "04_data_packs"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "加油包当月没用完，能结转到下个月吗？",
+      "latency_s": 1.49,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb08",
+      "type": "kb",
+      "turns": [
+        "套餐里没用完的流量会清零吗？"
+      ],
+      "answer": "当月未用完的套餐内国内通用流量可以结转到次月，结转流量在次月月底前有效[1]。结转流量在次月优先使用，次月仍未用完的部分不再继续结转[1]。",
+      "reference": "当月未用完的套餐内通用流量可以结转到次月，在次月月底前有效。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "04_data_packs"
+      ],
+      "gold_docs": [
+        "04_data_packs"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "套餐里没用完的流量会清零吗？",
+      "latency_s": 1.58,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb09",
+      "type": "kb",
+      "turns": [
+        "装宽带要交安装费吗？"
+      ],
+      "answer": "签约 12 个月的用户免收安装调试费[1]。不签约的用户收取 100 元安装调试费[1]。",
+      "reference": "签约12个月免收安装调试费，不签约收取100元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "06_broadband_install"
+      ],
+      "gold_docs": [
+        "06_broadband_install"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "装宽带要交安装费吗？",
+      "latency_s": 1.28,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb10",
+      "type": "kb",
+      "turns": [
+        "搬家了宽带能移机吗？怎么收费？"
+      ],
+      "answer": "同城移机收取 50 元移机费，提交申请后 3 个工作日内完成[1]。不支持跨城市移机，需要在原地址办理拆机，再到新城市重新办理新装[1]。",
+      "reference": "同城移机收50元移机费，3个工作日内完成；不支持跨城市移机。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "06_broadband_install"
+      ],
+      "gold_docs": [
+        "06_broadband_install"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "搬家了宽带能移机吗？怎么收费？",
+      "latency_s": 1.48,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb11",
+      "type": "kb",
+      "turns": [
+        "家里宽带突然断了，光猫上有个灯一直闪红色，是什么问题？"
+      ],
+      "answer": "LOS 灯红色闪烁：光纤信号中断，通常是入户光纤弯折、断裂或外部线路故障，需要报修[1]。PON 灯闪烁或熄灭：光猫没有完成注册，可以先重启光猫，仍未恢复请报修[1]。",
+      "reference": "说明光纤信号中断，通常是入户光纤弯折、断裂或外部线路故障，需要报修。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "07_broadband_repair"
+      ],
+      "gold_docs": [
+        "07_broadband_repair"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "家里宽带突然断了，光猫上有个灯一直闪红色，是什么问题？",
+      "latency_s": 1.16,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb12",
+      "type": "kb",
+      "turns": [
+        "宽带报修后多久能修好？"
+      ],
+      "answer": "在 App「宽带—故障报修」中提交报修，或到营业厅登记[1]。报修后装维人员会在 2 小时内联系用户[1]。",
+      "reference": "城区故障承诺24小时内修复，农村48小时内修复。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "07_broadband_repair"
+      ],
+      "gold_docs": [
+        "07_broadband_repair"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "宽带报修后多久能修好？",
+      "latency_s": 1.47,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb13",
+      "type": "kb",
+      "turns": [
+        "宽带维修超时了有补偿吗？"
+      ],
+      "answer": "因青禾通信原因超过承诺时限仍未修复的，每超过 1 天减免 1 天的宽带月费（按月费的 1/30 计算），在次月账单中自动抵扣[1]。签约 12 个月的用户免收安装调试费[2]。",
+      "reference": "有。因青禾通信原因超时未修复的，每超过1天减免1天宽带月费，在次月账单中抵扣。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "07_broadband_repair",
+        "06_broadband_install"
+      ],
+      "gold_docs": [
+        "07_broadband_repair"
+      ],
+      "citation_hit": true,
+      "citation_precision": 0.5,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "宽带维修超时了有补偿吗？",
+      "latency_s": 1.37,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb14",
+      "type": "kb",
+      "turns": [
+        "去日本旅游，流量日租包多少钱一天？"
+      ],
+      "answer": "未订购日租包时，漫游流量按 0.5 元/MB 计费，每天费用达到 60 元后降速至 128kbps，当天不再收费[1]。| 亚洲热门（日本、韩国、泰国、新加坡、马来西亚、越南） | 30元/天 | 每天 1GB 高速流量 |[2]。",
+      "reference": "日本属于亚洲热门区域，日租包30元/天，每天含1GB高速流量。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "08_intl_roaming",
+        "08_intl_roaming"
+      ],
+      "gold_docs": [
+        "08_intl_roaming"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "去日本旅游，流量日租包多少钱一天？",
+      "latency_s": 1.59,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb15",
+      "type": "kb",
+      "turns": [
+        "出国没买日租包，用流量怎么收费？"
+      ],
+      "answer": "未订购日租包时，漫游流量按 0.5 元/MB 计费，每天费用达到 60 元后降速至 128kbps，当天不再收费[1]。每天的 1GB 高速流量用完后降速至 512kbps，不额外收费[2]。",
+      "reference": "按0.5元/MB计费，每天达到60元后降速至128kbps，当天不再收费。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "08_intl_roaming",
+        "08_intl_roaming"
+      ],
+      "gold_docs": [
+        "08_intl_roaming"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "出国没买日租包，用流量怎么收费？",
+      "latency_s": 1.81,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb16",
+      "type": "kb",
+      "turns": [
+        "号码暂时不用但想留着，每个月要交多少钱？最长能留多久？"
+      ],
+      "answer": "长期不用号码但想保留号码时，可以办理停机保号：[1]。单次最长可以办理 12 个月，到期后自动复机并恢复原套餐计费[1]。",
+      "reference": "保号费5元/月，单次最长12个月。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "09_suspension"
+      ],
+      "gold_docs": [
+        "09_suspension"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "号码暂时不用但想留着，每个月要交多少钱？最长能留多久？",
+      "latency_s": 2.0,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb17",
+      "type": "kb",
+      "turns": [
+        "一直没交话费的话，多久号码会被收回？"
+      ],
+      "answer": "账户余额低于 10 元时会收到短信提醒，请及时充值[1]。欠费满 90 天号码进入销号流程，销号后号码无法恢复[1]。",
+      "reference": "欠费满90天号码进入销号流程。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "09_suspension"
+      ],
+      "gold_docs": [
+        "09_suspension"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "一直没交话费的话，多久号码会被收回？",
+      "latency_s": 1.22,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb18",
+      "type": "kb",
+      "turns": [
+        "补办手机卡要多少钱？可以让家人代办吗？"
+      ],
+      "answer": "机主本人携带有效身份证件原件到营业厅办理，补卡费 10 元[1]。为保护账户安全，补卡不支持他人代办[1]。",
+      "reference": "补卡费10元（五星及以上用户免费）；补卡不支持他人代办，需机主本人办理。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "10_sim_replacement"
+      ],
+      "gold_docs": [
+        "10_sim_replacement"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "补办手机卡要多少钱？可以让家人代办吗？",
+      "latency_s": 1.82,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb19",
+      "type": "kb",
+      "turns": [
+        "用我的身份证最多能在你们这开几张卡？"
+      ],
+      "answer": "需要同时提供本人身份证件和学生证（或学信网学籍在线验证报告）[1]。同一个身份证件在青禾通信最多可以登记 5 个号码（副卡、eSIM 手表号码都计入）[2]。",
+      "reference": "最多5个号码（副卡、eSIM手表号码也计入）。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "19_campus_card",
+        "11_real_name"
+      ],
+      "gold_docs": [
+        "11_real_name"
+      ],
+      "citation_hit": true,
+      "citation_precision": 0.5,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "用我的身份证最多能在你们这开几张卡？",
+      "latency_s": 1.11,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb20",
+      "type": "kb",
+      "turns": [
+        "上个月的话费报销要开票，几号以后能开？"
+      ],
+      "answer": "月结发票：按每月实际消费开具，每月 5 日后可以开具上个月的发票[1]。同一笔费用只能开一种发票，已经开过充值发票的金额不能再开月结发票，反之亦然[1]。",
+      "reference": "月结发票每月5日后可以开具上个月的发票。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "12_invoice_bill"
+      ],
+      "gold_docs": [
+        "12_invoice_bill"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "上个月的话费报销要开票，几号以后能开？",
+      "latency_s": 0.92,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb21",
+      "type": "kb",
+      "turns": [
+        "交了话费半天了余额还没变，怎么办？"
+      ],
+      "answer": "销户时剩余的预存话费（不含赠送话费）可以退还，可以选择原路退回或现金退还，原路退回一般在 7 个工作日内到账[1]。可以在青禾通信 App「我的—套餐变更」中办理，也可以携带本人身份证件到营业厅办理[2]。",
+      "reference": "充值一般实时到账，最迟2小时；超过2小时未到账请保存支付订单号联系在线客服。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "17_cancel_transfer",
+        "03_plan_change"
+      ],
+      "gold_docs": [
+        "13_recharge"
+      ],
+      "citation_hit": false,
+      "citation_precision": 0.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "交了话费半天了余额还没变，怎么办？",
+      "latency_s": 0.99,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb22",
+      "type": "kb",
+      "turns": [
+        "5G畅享99元套餐最多可以加几张副卡？副卡怎么收费？"
+      ],
+      "answer": "| 套餐 | 免费副卡 | 最多副卡数 | 收费副卡月功能费 |[2]。| 5G畅享99元 | 0张 | 2张 | 10元/张 |[2]。",
+      "reference": "最多2张副卡，每张10元/月。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "14_secondary_cards"
+      ],
+      "gold_docs": [
+        "01_plans_overview",
+        "14_secondary_cards"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "5G畅享99元套餐最多可以加几张副卡？副卡怎么收费？",
+      "latency_s": 1.51,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb23",
+      "type": "kb",
+      "turns": [
+        "合约机提前解约，违约金怎么算？"
+      ],
+      "answer": "提前解约需要支付违约金，计算方法：违约金 = 剩余未履约月数 × 每月补贴金额，其中每月补贴金额 = 购机补贴总额 ÷ 合约月数[1]。用户履约 10 个月后解约，剩余 14 个月，违约金为 14 × 50 = 700 元[1]。",
+      "reference": "违约金=剩余未履约月数×每月补贴金额，每月补贴金额=购机补贴总额÷合约月数。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "15_contract_phone"
+      ],
+      "gold_docs": [
+        "15_contract_phone"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "合约机提前解约，违约金怎么算？",
+      "latency_s": 0.86,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb24",
+      "type": "kb",
+      "turns": [
+        "积分可以抵话费吗？积分什么时候清零？"
+      ],
+      "answer": "当年获得的积分在次年 12 月 31 日清零[1]。话费抵扣：100 积分抵扣 1 元话费[2]。",
+      "reference": "可以，100积分抵扣1元话费；当年获得的积分在次年12月31日清零。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "16_points_membership",
+        "16_points_membership"
+      ],
+      "gold_docs": [
+        "16_points_membership"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "积分可以抵话费吗？积分什么时候清零？",
+      "latency_s": 0.81,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb25",
+      "type": "kb",
+      "turns": [
+        "我把号码注销了，后悔了还能要回来吗？"
+      ],
+      "answer": "欠费满 90 天号码进入销号流程，销号后号码无法恢复[1]。销户后号码冻结 90 天[2]。",
+      "reference": "销户后号码冻结90天，冻结期内可到营业厅申请恢复，期满后无法恢复。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "09_suspension",
+        "17_cancel_transfer"
+      ],
+      "gold_docs": [
+        "17_cancel_transfer"
+      ],
+      "citation_hit": true,
+      "citation_precision": 0.5,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我把号码注销了，后悔了还能要回来吗？",
+      "latency_s": 1.12,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb26",
+      "type": "kb",
+      "turns": [
+        "VoNR高清通话怎么开通？要额外收费吗？"
+      ],
+      "answer": "VoNR 是基于 5G 网络的高清语音通话，通话时不会从 5G 回落到 4G，接通更快，通话时上网也不中断[1]。只需要在手机“设置—移动网络”中打开“VoNR”或“5G 通话”开关即可使用，不额外收费，通话分钟数按套餐正常扣减[1]。",
+      "reference": "在手机“设置—移动网络”中打开VoNR或5G通话开关即可，不额外收费。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "18_5g_network"
+      ],
+      "gold_docs": [
+        "18_5g_network"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "VoNR高清通话怎么开通？要额外收费吗？",
+      "latency_s": 1.88,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb27",
+      "type": "kb",
+      "turns": [
+        "研究生可以办青春校园卡吗？有年龄限制吗？"
+      ],
+      "answer": "全日制在校学生（包括本科生、专科生和研究生）[1]。办理条件和毕业后的处理方式见《青春校园卡办理说明》[2]。",
+      "reference": "可以，全日制研究生可以办理；年龄需在16至28周岁之间。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "19_campus_card",
+        "01_plans_overview"
+      ],
+      "gold_docs": [
+        "19_campus_card"
+      ],
+      "citation_hit": true,
+      "citation_precision": 0.5,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "研究生可以办青春校园卡吗？有年龄限制吗？",
+      "latency_s": 1.36,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb28",
+      "type": "kb",
+      "turns": [
+        "接到96110打来的电话应该接吗？"
+      ],
+      "answer": "96110 是全国反诈预警劝阻专线[1]。接到 96110 的来电，说明您可能正在遭遇电信网络诈骗，请务必接听并配合劝阻[1]。",
+      "reference": "务必接听，96110是全国反诈预警劝阻专线，接到说明可能正在遭遇诈骗。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "20_anti_fraud"
+      ],
+      "gold_docs": [
+        "20_anti_fraud"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "接到96110打来的电话应该接吗？",
+      "latency_s": 0.88,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb29",
+      "type": "kb",
+      "turns": [
+        "服务密码连续输错几次会被锁？锁多久？"
+      ],
+      "answer": "服务密码为 6 位数字，可以在 App 中通过人脸识别重置，或者携带身份证件到营业厅重置[1]。连续输错 5 次，服务密码会被锁定 24 小时[1]。",
+      "reference": "连续输错5次会被锁定24小时。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "21_faq"
+      ],
+      "gold_docs": [
+        "21_faq"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "服务密码连续输错几次会被锁？锁多久？",
+      "latency_s": 0.79,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb30",
+      "type": "kb",
+      "turns": [
+        "手机丢了第一步应该做什么？"
+      ],
+      "answer": "手机丢失后请第一时间在 App 或营业厅办理挂失[1]。挂失后号码立即停机，避免被他人冒用[1]。",
+      "reference": "第一时间在App或营业厅办理挂失，挂失后号码立即停机，避免被冒用。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "10_sim_replacement"
+      ],
+      "gold_docs": [
+        "10_sim_replacement"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "手机丢了第一步应该做什么？",
+      "latency_s": 1.01,
+      "llm_calls": 1
+    },
+    {
+      "id": "kb31",
+      "type": "kb",
+      "turns": [
+        "出国前需要做什么准备才能在国外用手机？"
+      ],
+      "answer": "国际及港澳台漫游功能默认关闭[1]。出境前请在青禾通信 App「漫游—开通漫游」中开通，或到营业厅办理，开通后立即生效[1]。",
+      "reference": "国际漫游默认关闭，出境前需在App或营业厅开通漫游功能，可按需订购流量日租包。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [
+        "08_intl_roaming"
+      ],
+      "gold_docs": [
+        "08_intl_roaming"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "出国前需要做什么准备才能在国外用手机？",
+      "latency_s": 1.72,
+      "llm_calls": 1
+    },
+    {
+      "id": "tool01",
+      "type": "tool",
+      "turns": [
+        "我用的是5G畅享39元套餐，这个月用了70GB流量、打了100分钟电话，要交多少钱？"
+      ],
+      "answer": "按5G畅享39元计算，本月费用合计 189 元。计算过程：月费39 + 套外流量150（40GB×5元=200元，超过每月150元封顶，按150元收取（当月剩余时间降速至1Mbps）） + 套外通话0（0分钟×0.15元） + 副卡0（收费副卡0张） = 189元。",
+      "reference": "39元月费 + 套外流量40GB×5元=200元，超过150元封顶按150元收取，合计189元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "calculate_fee"
+      ],
+      "expected_tools": [
+        "calculate_fee"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我用的是5G畅享39元套餐，这个月用了70GB流量、打了100分钟电话，要交多少钱？",
+      "latency_s": 1.78,
+      "llm_calls": 2
+    },
+    {
+      "id": "tool02",
+      "type": "tool",
+      "turns": [
+        "5G畅享59元套餐，本月用了80GB流量、通话350分钟，一共多少钱？"
+      ],
+      "answer": "按5G畅享59元计算，本月费用合计 126.5 元。计算过程：月费59 + 套外流量60（20GB×3元=60元） + 套外通话7.5（50分钟×0.15元） + 副卡0（收费副卡0张） = 126.5元。",
+      "reference": "59 + 套外流量20GB×3=60 + 套外通话50分钟×0.15=7.5，合计126.5元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "calculate_fee"
+      ],
+      "expected_tools": [
+        "calculate_fee"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "5G畅享59元套餐，本月用了80GB流量、通话350分钟，一共多少钱？",
+      "latency_s": 1.54,
+      "llm_calls": 2
+    },
+    {
+      "id": "tool03",
+      "type": "tool",
+      "turns": [
+        "我办的是99元套餐，加了2张副卡，这个月全家一共用了120.5GB流量、600分钟通话，总费用多少？"
+      ],
+      "answer": "按5G畅享99元计算，本月费用合计 192 元。计算过程：月费99 + 套外流量63（21GB×3元=63元） + 套外通话10（100分钟×0.1元） + 副卡20（收费副卡2张） = 192元。",
+      "reference": "99 + 套外流量21GB×3=63 + 套外通话100分钟×0.1=10 + 副卡2×10=20，合计192元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "calculate_fee"
+      ],
+      "expected_tools": [
+        "calculate_fee"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我办的是99元套餐，加了2张副卡，这个月全家一共用了120.5GB流量、600分钟通话，总费用多少？",
+      "latency_s": 1.61,
+      "llm_calls": 2
+    },
+    {
+      "id": "tool04",
+      "type": "tool",
+      "turns": [
+        "4G守护卡这个月用了12GB流量、150分钟通话，要交多少钱？"
+      ],
+      "answer": "按4G守护卡19元计算，本月费用合计 36.5 元。计算过程：月费19 + 套外流量10（2GB×5元=10元） + 套外通话7.5（50分钟×0.15元） + 副卡0（收费副卡0张） = 36.5元。",
+      "reference": "19 + 套外流量2GB×5=10 + 套外通话50分钟×0.15=7.5，合计36.5元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "calculate_fee"
+      ],
+      "expected_tools": [
+        "calculate_fee"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "4G守护卡这个月用了12GB流量、150分钟通话，要交多少钱？",
+      "latency_s": 1.67,
+      "llm_calls": 2
+    },
+    {
+      "id": "tool05",
+      "type": "tool",
+      "turns": [
+        "我每个月大概用45GB流量、打200分钟电话，哪个套餐最省钱？"
+      ],
+      "answer": "按您的用量（流量45GB，通话200分钟，副卡0张），最省钱的是5G畅享59元，预计每月 59 元；其次是：5G畅享99元 99 元；5G畅享39元 129 元。",
+      "reference": "5G畅享59元最省钱，套餐内资源够用，每月59元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "recommend_plan"
+      ],
+      "expected_tools": [
+        "calculate_fee",
+        "recommend_plan"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我每个月大概用45GB流量、打200分钟电话，哪个套餐最省钱？",
+      "latency_s": 1.7,
+      "llm_calls": 2
+    },
+    {
+      "id": "tool06",
+      "type": "tool",
+      "turns": [
+        "我是在校大学生，每月用25GB流量、通话150分钟，选哪个套餐最划算？"
+      ],
+      "answer": "按您的用量（流量25GB，通话150分钟，副卡0张），最省钱的是青春校园卡29元，预计每月 29 元；其次是：5G畅享39元 46.5 元；5G畅享59元 59 元。",
+      "reference": "青春校园卡29元最划算，每月29元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "recommend_plan"
+      ],
+      "expected_tools": [
+        "calculate_fee",
+        "recommend_plan"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我是在校大学生，每月用25GB流量、通话150分钟，选哪个套餐最划算？",
+      "latency_s": 1.64,
+      "llm_calls": 2
+    },
+    {
+      "id": "tool07",
+      "type": "tool",
+      "turns": [
+        "月费60元以内的5G套餐有哪些？"
+      ],
+      "answer": "符合条件的套餐有：5G畅享39元（月费39元，30GB，100分钟）；5G畅享59元（月费59元，60GB，300分钟）；青春校园卡29元（月费29元，30GB，200分钟，仅限学生）。",
+      "reference": "5G畅享39元和5G畅享59元；在校学生还可以办青春校园卡29元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "query_plans"
+      ],
+      "expected_tools": [
+        "query_plans"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "月费60元以内的5G套餐有哪些？",
+      "latency_s": 1.58,
+      "llm_calls": 2
+    },
+    {
+      "id": "tool08",
+      "type": "tool",
+      "turns": [
+        "我是159元套餐，有3张副卡，这个月用了230GB流量和1200分钟通话，要交多少钱？"
+      ],
+      "answer": "按5G尊享159元计算，本月费用合计 279 元。计算过程：月费159 + 套外流量90（30GB×3元=90元） + 套外通话20（200分钟×0.1元） + 副卡10（收费副卡1张） = 279元。",
+      "reference": "159 + 套外流量30GB×3=90 + 套外通话200分钟×0.1=20 + 第3张副卡10元，合计279元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "calculate_fee"
+      ],
+      "expected_tools": [
+        "calculate_fee"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我是159元套餐，有3张副卡，这个月用了230GB流量和1200分钟通话，要交多少钱？",
+      "latency_s": 1.59,
+      "llm_calls": 2
+    },
+    {
+      "id": "mt01",
+      "type": "multi_turn",
+      "turns": [
+        "5G畅享59元套餐包含多少流量和通话？",
+        "如果我每月用75GB流量、通话300分钟，要交多少钱？"
+      ],
+      "answer": "按5G畅享59元计算，本月费用合计 104 元。计算过程：月费59 + 套外流量45（15GB×3元=45元） + 套外通话0（0分钟×0.15元） + 副卡0（收费副卡0张） = 104元。",
+      "reference": "59 + 套外流量15GB×3=45，通话未超出，合计104元。",
+      "correct": true,
+      "refused": false,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [
+        "calculate_fee"
+      ],
+      "expected_tools": [
+        "calculate_fee"
+      ],
+      "tool_ok": true,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "如果我每月用75GB流量、通话300分钟，要交多少钱？",
+      "latency_s": 1.57,
+      "llm_calls": 2
+    },
+    {
+      "id": "mt02",
+      "type": "multi_turn",
+      "turns": [
+        "我想办理停机保号。",
+        "最长能保多久？每月收多少钱？"
+      ],
+      "answer": "单次最长可以办理 12 个月，到期后自动复机并恢复原套餐计费[1]。缴清欠费后系统会自动复机，一般 30 分钟内恢复，最长不超过 24 小时[2]。",
+      "reference": "单次最长12个月，保号费5元/月。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "09_suspension",
+        "09_suspension"
+      ],
+      "gold_docs": [
+        "09_suspension"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我想办理停机保号。 最长能保多久？每月收多少钱？",
+      "latency_s": 1.35,
+      "llm_calls": 1
+    },
+    {
+      "id": "mt03",
+      "type": "multi_turn",
+      "turns": [
+        "我下个月要去泰国出差。",
+        "那边的流量日租包多少钱一天？"
+      ],
+      "answer": "日租包按北京时间 0 点至 24 点计为 1 天，当天只要使用了漫游流量就收取当天的费用[1]。未订购日租包时，漫游流量按 0.5 元/MB 计费，每天费用达到 60 元后降速至 128kbps，当天不再收费[2]。",
+      "reference": "泰国属于亚洲热门区域，日租包30元/天，每天含1GB高速流量。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "08_intl_roaming",
+        "08_intl_roaming"
+      ],
+      "gold_docs": [
+        "08_intl_roaming"
+      ],
+      "citation_hit": true,
+      "citation_precision": 1.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "我下个月要去泰国出差。 那边的流量日租包多少钱一天？",
+      "latency_s": 1.68,
+      "llm_calls": 1
+    },
+    {
+      "id": "mt04",
+      "type": "multi_turn",
+      "turns": [
+        "青春校园卡每个月多少钱？",
+        "那毕业以后会怎么样？"
+      ],
+      "answer": "仅限在校学生办理[1]。办理条件和毕业后的处理方式见《青春校园卡办理说明》[1]。",
+      "reference": "毕业或离校后，次月1日自动转为5G畅享59元套餐，号码不变。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "01_plans_overview"
+      ],
+      "gold_docs": [
+        "19_campus_card"
+      ],
+      "citation_hit": false,
+      "citation_precision": 0.0,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "青春校园卡每个月多少钱？ 那毕业以后会怎么样？",
+      "latency_s": 1.57,
+      "llm_calls": 1
+    },
+    {
+      "id": "neg01",
+      "type": "unanswerable",
+      "turns": [
+        "青禾通信的卫星电话业务怎么收费？"
+      ],
+      "answer": "出境前请在青禾通信 App「漫游—开通漫游」中开通，或到营业厅办理，开通后立即生效[1]。青禾通信目前在售 7 款套餐[2]。",
+      "reference": "知识库中没有卫星电话业务的信息，应拒答并建议联系人工客服。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "08_intl_roaming",
+        "01_plans_overview"
+      ],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": true,
+      "unsupported_reason": "知识库外的问题没有拒答",
+      "retrieval_query": "青禾通信的卫星电话业务怎么收费？",
+      "latency_s": 1.69,
+      "llm_calls": 1
+    },
+    {
+      "id": "neg02",
+      "type": "unanswerable",
+      "turns": [
+        "物联网卡的资费标准是多少？"
+      ],
+      "answer": "抱歉，知识库中没有找到相关信息，建议通过青禾通信 App 在线客服或到营业厅咨询人工客服。",
+      "reference": "知识库中没有物联网卡的信息，应拒答并建议联系人工客服。",
+      "correct": true,
+      "refused": true,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "物联网卡的资费标准是多少？",
+      "latency_s": 1.4,
+      "llm_calls": 1
+    },
+    {
+      "id": "neg03",
+      "type": "unanswerable",
+      "turns": [
+        "青禾通信的云盘会员多少钱一个月？"
+      ],
+      "answer": "青禾通信目前在售 7 款套餐[1]。光猫由青禾通信免费提供（租用），拆机或销户时需要归还，未归还的需赔偿 100 元[2]。",
+      "reference": "知识库中没有云盘会员的信息，应拒答。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "01_plans_overview",
+        "06_broadband_install"
+      ],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": true,
+      "unsupported_reason": "知识库外的问题没有拒答",
+      "retrieval_query": "青禾通信的云盘会员多少钱一个月？",
+      "latency_s": 1.11,
+      "llm_calls": 1
+    },
+    {
+      "id": "neg04",
+      "type": "unanswerable",
+      "turns": [
+        "企业专线（政企专线）怎么报价？"
+      ],
+      "answer": "抱歉，知识库中没有找到相关信息，建议通过青禾通信 App 在线客服或到营业厅咨询人工客服。",
+      "reference": "知识库中没有政企专线的信息，应拒答并建议联系人工客服。",
+      "correct": true,
+      "refused": true,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "企业专线（政企专线）怎么报价？",
+      "latency_s": 0.82,
+      "llm_calls": 1
+    },
+    {
+      "id": "neg05",
+      "type": "unanswerable",
+      "turns": [
+        "青禾通信的总部在哪个城市？"
+      ],
+      "answer": "抱歉，知识库中没有找到相关信息，建议通过青禾通信 App 在线客服或到营业厅咨询人工客服。",
+      "reference": "知识库中没有公司总部的信息，应拒答。",
+      "correct": true,
+      "refused": true,
+      "cited_docs": [],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": false,
+      "unsupported_reason": "",
+      "retrieval_query": "青禾通信的总部在哪个城市？",
+      "latency_s": 0.95,
+      "llm_calls": 1
+    },
+    {
+      "id": "neg06",
+      "type": "unanswerable",
+      "turns": [
+        "家里的固定电话（座机）月租多少钱？"
+      ],
+      "answer": "月费 159 元，含 200GB 国内通用流量和 1000 分钟国内通话[1]。每月可领取 2 项会员权益[1]。",
+      "reference": "知识库中没有固定电话业务的信息，应拒答并建议联系人工客服。",
+      "correct": false,
+      "refused": false,
+      "cited_docs": [
+        "01_plans_overview"
+      ],
+      "gold_docs": [],
+      "citation_hit": null,
+      "citation_precision": null,
+      "tools_called": [],
+      "expected_tools": [],
+      "tool_ok": null,
+      "unsupported": true,
+      "unsupported_reason": "知识库外的问题没有拒答",
+      "retrieval_query": "家里的固定电话（座机）月租多少钱？",
+      "latency_s": 1.36,
+      "llm_calls": 1
+    }
+  ]
+}
