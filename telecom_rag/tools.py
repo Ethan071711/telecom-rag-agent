@@ -75,14 +75,28 @@ TOOL_SPECS: list[dict] = [
 ]
 
 
-def _num(value, default: float = 0.0) -> float:
-    """模型有时会把数字写成 "70GB" 或 "七十" 以外的字符串，这里尽量解析出数字。"""
-    if value is None or value == "":
-        return default
-    if isinstance(value, (int, float)):
-        return float(value)
-    match = re.search(r"-?\d+(?:\.\d+)?", str(value))
-    return float(match.group()) if match else default
+def _num(value, name: str, units: str = "", integer: bool = False) -> float:
+    """Accept a complete number with an optional matching unit; never guess missing usage."""
+    if type(value) not in (int, float, str):
+        raise ValueError(f"{name}必须是明确的非负数字")
+    if isinstance(value, str):
+        suffix = rf"(?:{units})?" if units else ""
+        match = re.fullmatch(rf"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*{suffix}\s*", value, re.I)
+        if not match:
+            raise ValueError(f"{name}无法识别，请提供明确的数字和正确单位")
+        value = match.group(1)
+    number = float(value)
+    if not math.isfinite(number) or not 0 <= number <= 1_000_000_000:
+        raise ValueError(f"{name}必须是0到1000000000之间的有限数字")
+    if integer and not number.is_integer():
+        raise ValueError(f"{name}必须是整数，不能自动取整")
+    return number
+
+
+def _boolean(value, name: str) -> bool:
+    if type(value) is not bool:
+        raise ValueError(f"{name}必须是true或false，请确认后重试")
+    return value
 
 
 def _fmt(x: float) -> str:
@@ -136,6 +150,12 @@ class PlanBook:
     # ---------------- 工具实现 ----------------
     def query_plans(self, keyword: str | None = None, max_monthly_fee=None, min_data_gb=None,
                     need_5g: bool | None = None) -> dict:
+        if keyword is not None and not isinstance(keyword, str):
+            raise ValueError("套餐关键词必须是文字")
+        fee_limit = _num(max_monthly_fee, "月费上限", "元") if max_monthly_fee is not None else None
+        data_min = _num(min_data_gb, "流量下限", "GB|G") if min_data_gb is not None else None
+        if need_5g is not None:
+            need_5g = _boolean(need_5g, "是否需要5G")
         rows = []
         target = self.resolve(keyword) if keyword else None
         for p in self.plans:
@@ -144,9 +164,9 @@ class PlanBook:
                     continue
                 if target is None and _normalize(keyword) not in _normalize(p["name"] + "".join(p["aliases"])):
                     continue
-            if max_monthly_fee not in (None, "") and p["monthly_fee"] > _num(max_monthly_fee):
+            if fee_limit is not None and p["monthly_fee"] > fee_limit:
                 continue
-            if min_data_gb not in (None, "") and p["data_gb"] < _num(min_data_gb):
+            if data_min is not None and p["data_gb"] < data_min:
                 continue
             if need_5g and p["network"] != "5G":
                 continue
@@ -159,11 +179,15 @@ class PlanBook:
             })
         return {"符合条件的套餐数": len(rows), "套餐列表": rows}
 
-    def calculate_fee(self, plan: str, data_gb=0, voice_minutes=0, secondary_cards=0) -> dict:
+    def calculate_fee(self, plan: str, data_gb, voice_minutes=0, secondary_cards=0) -> dict:
+        if not isinstance(plan, str):
+            raise ValueError("套餐名称必须是文字")
         p = self.resolve(plan)
         if p is None:
             return {"error": f"没有找到套餐“{plan}”，可选套餐：{'、'.join(self.names)}"}
-        data, voice, cards = _num(data_gb), _num(voice_minutes), int(_num(secondary_cards))
+        data = _num(data_gb, "流量用量", "GB|G")
+        voice = _num(voice_minutes, "通话分钟数", "分钟")
+        cards = int(_num(secondary_cards, "副卡数量", "张(?:副卡)?", integer=True))
         if cards > p["max_secondary_cards"]:
             return {"error": f"{p['name']}最多只能添加 {p['max_secondary_cards']} 张副卡"}
 
@@ -192,9 +216,12 @@ class PlanBook:
             "合计(元)": _clean(total), "计算过程": steps,
         }
 
-    def recommend_plan(self, data_gb=0, voice_minutes=0, is_student: bool = False, secondary_cards=0) -> dict:
+    def recommend_plan(self, data_gb, voice_minutes=0, is_student: bool = False, secondary_cards=0) -> dict:
         ranking = []
-        cards = int(_num(secondary_cards))
+        data = _num(data_gb, "流量用量", "GB|G")
+        voice = _num(voice_minutes, "通话分钟数", "分钟")
+        cards = int(_num(secondary_cards, "副卡数量", "张(?:副卡)?", integer=True))
+        is_student = _boolean(is_student, "学生身份")
         for p in self.plans:
             if p["student_only"] and not is_student:
                 continue
@@ -202,12 +229,14 @@ class PlanBook:
                 continue
             if cards > p["max_secondary_cards"]:
                 continue
-            fee = self.calculate_fee(p["name"], data_gb, voice_minutes, cards)
+            fee = self.calculate_fee(p["name"], data, voice, cards)
             ranking.append({"套餐": p["name"], "预计月费用(元)": fee["合计(元)"], "网络": p["network"],
                             "计算过程": fee["计算过程"]})
         ranking.sort(key=lambda r: r["预计月费用(元)"])
+        if not ranking:
+            return {"error": "没有支持该副卡数量的可推荐套餐，请确认数量或联系人工客服"}
         return {
-            "用量": f"流量{_fmt(_num(data_gb))}GB，通话{_fmt(_num(voice_minutes))}分钟，副卡{cards}张",
+            "用量": f"流量{_fmt(data)}GB，通话{_fmt(voice)}分钟，副卡{cards}张",
             "最省钱的套餐": ranking[0]["套餐"] if ranking else None,
             "费用排名": ranking,
             "说明": "不含家庭融合199元（含宽带，需要宽带时再单独比较）；"
@@ -221,7 +250,9 @@ class PlanBook:
         if name not in funcs:
             return json.dumps({"error": f"未知工具 {name}"}, ensure_ascii=False)
         try:
-            result = funcs[name](**(arguments or {}))
-        except TypeError as exc:  # 模型传了多余或缺少的参数
-            result = {"error": f"参数错误：{exc}"}
-        return json.dumps(result, ensure_ascii=False)
+            if not isinstance(arguments, dict):
+                raise TypeError("工具参数必须是对象")
+            result = funcs[name](**arguments)
+        except (TypeError, ValueError, OverflowError) as exc:
+            result = {"error": f"参数错误：{exc}；请确认参数后重试"}
+        return json.dumps(result, ensure_ascii=False, allow_nan=False)

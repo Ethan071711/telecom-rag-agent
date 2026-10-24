@@ -76,3 +76,38 @@ def test_run_returns_json(plans):
     assert data["合计(元)"] == 189
     assert "error" in json.loads(plans.run("unknown_tool", {}))
     assert "error" in json.loads(plans.run("calculate_fee", {"plan": "5G畅享39元", "foo": 1}))
+
+
+@pytest.mark.parametrize("field,value", [
+    ("data_gb", -10), ("data_gb", "not-a-number"), ("data_gb", "80MB"),
+    ("data_gb", None), ("data_gb", ""), ("data_gb", True),
+    ("data_gb", float("inf")), ("data_gb", float("nan")), ("data_gb", "1e309"),
+    ("data_gb", 10**1000), ("voice_minutes", -1), ("voice_minutes", "30GB"),
+    ("secondary_cards", 1.9), ("secondary_cards", "1.9张"), ("secondary_cards", -1),
+])
+def test_invalid_usage_returns_an_error_instead_of_a_bill(plans, field, value):
+    args = {"plan": "159元", "data_gb": 10, field: value}
+    result = json.loads(plans.run("calculate_fee", args))
+    assert "error" in result and "合计(元)" not in result
+
+
+@pytest.mark.parametrize("name,args", [
+    ("recommend_plan", {"data_gb": 25, "is_student": "false"}),
+    ("recommend_plan", {"data_gb": 25, "is_student": 1}),
+    ("recommend_plan", {"data_gb": -1}),
+    ("recommend_plan", {"data_gb": 25, "secondary_cards": 1.9}),
+    ("recommend_plan", {"data_gb": 25, "secondary_cards": 999}),
+    ("query_plans", {"need_5g": "false"}),
+    ("query_plans", {"max_monthly_fee": "unknown"}),
+    ("query_plans", {"min_data_gb": -1}),
+    ("calculate_fee", {"plan": "59元"}),
+    ("calculate_fee", []),
+])
+def test_invalid_parameters_are_rejected_by_every_tool(plans, name, args):
+    assert "error" in json.loads(plans.run(name, args))
+
+
+def test_explicit_false_and_zero_remain_valid(plans):
+    result=json.loads(plans.run("recommend_plan", {"data_gb": 25, "is_student": False}))
+    assert all(r["套餐"] != "青春校园卡29元" for r in result["费用排名"])
+    assert plans.calculate_fee("159元", "0GB", "0分钟", "1张副卡")["副卡数"] == 1
