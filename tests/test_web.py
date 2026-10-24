@@ -8,14 +8,14 @@ from test_agent import CHUNKS, FakeRetriever, ScriptedLLM, settings
 
 def test_render_details_shows_snippets_tools_and_latency():
     llm = ScriptedLLM([
-        Reply(tool_calls=[ToolCall("c1", "calculate_fee", {"plan": "5G畅享59元", "data_gb": 75})]),
-        Reply(content="本月合计 104 元 [2]。"),
+        Reply(tool_calls=[ToolCall("c1", "query_plans", {"max_monthly_fee":59})]),
+        Reply(content="5G畅享59元包含60GB [2]。"),
     ])
-    result = TelecomAgent(FakeRetriever(), llm, settings()).ask("59元套餐用了75GB流量要交多少钱？")
+    result = TelecomAgent(FakeRetriever(), llm, settings()).ask("59元以内的套餐有哪些？")
     details = render_details(result)
     assert f"{result.latency_s:.2f} 秒" in details
     assert "[2]《个人及家庭套餐资费总览》5G畅享59元" in details and CHUNKS[1].text in details
-    assert "calculate_fee" in details and '"data_gb": 75' in details and '"合计(元)": 104' in details
+    assert "query_plans" in details and '"max_monthly_fee": 59' in details and '"套餐列表"' in details
 
 
 def test_chat_turn_keeps_history_per_session_and_resets():

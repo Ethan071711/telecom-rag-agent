@@ -206,7 +206,7 @@ class PlanBook:
             data_note += f"，超过每月{_fmt(cap)}元封顶，按{_fmt(cap)}元收取（当月剩余时间降速至{self.rules['speed_after_cap']}）"
         steps = (f"月费{_fmt(p['monthly_fee'])} + 套外流量{_fmt(data_fee)}（{data_note}）"
                  f" + 套外通话{_fmt(voice_fee)}（{extra_min}分钟×{_fmt(p['extra_voice_yuan_per_min'])}元）"
-                 f" + 副卡{_fmt(card_fee)}（收费副卡{paid_cards}张） = {_fmt(total)}元")
+                 f" + 副卡{_fmt(card_fee)}（共{cards}张，其中免费{cards-paid_cards}张、收费{paid_cards}张） = {_fmt(total)}元")
         return {
             "套餐": p["name"], "月费": p["monthly_fee"],
             "套餐内流量(GB)": p["data_gb"], "实际流量(GB)": _clean(data), "套外流量(GB,向上取整)": extra_gb,

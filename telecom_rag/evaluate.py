@@ -3,10 +3,10 @@
 端到端指标（全部可复现、不依赖大模型打分）：
 - 答案准确率：可回答的题，回答包含全部关键事实（每个关键事实允许多种写法）且没有拒答；
               知识库外的题，正确拒答才算对。
-- 引用正确率：有标准出处的题，回答引用的片段里至少有一个来自标准出处文档。另报引用精确率（引用中来自标准出处的比例）。
+- 引用来源命中率：有标准出处的题，回答引用的片段里至少有一个来自标准出处文档。另报引用精确率（引用中来自标准出处的比例）。
 - 工具调用正确率：需要工具的题，调用了预期的工具。
 - 无依据回答比例：① 知识库外的题没有拒答；② 既没引用资料也没调用工具；③ 回答里带单位的数字
-                  （如 189元、120天）在给模型看过的资料、工具结果和问题里都找不到。满足任一条即记为无依据。
+                  （如 189元、120天）在实际引用片段及成功的业务工具结果中找不到对应数字和单位。满足任一条即记为无依据。
 """
 
 from __future__ import annotations
@@ -20,7 +20,8 @@ from pathlib import Path
 
 from .config import EVAL_PATH, RESULTS_DIR, Settings
 from .retriever import Retriever
-from .textutil import normalize, numeric_claims
+from .textutil import normalize
+from .grounding import issues as grounding_issues
 
 RETRIEVAL_MODES = {"dense": "向量检索", "bm25": "BM25", "hybrid": "混合(RRF)", "hybrid_rerank": "混合+重排"}
 TYPE_NAMES = {"kb": "知识问答", "tool": "工具计算", "multi_turn": "多轮对话", "unanswerable": "知识库外"}
@@ -98,14 +99,8 @@ def grade(item: dict, result) -> dict:
     if not answerable and not result.refused:
         reason = "知识库外的问题没有拒答"
     elif answerable and not result.refused:
-        if not result.cited and not called:
-            reason = "没有引用资料也没有调用工具"
-        else:
-            evidence = normalize(" ".join([h.chunk.text for h in result.evidence]
-                                          + [t["result"] for t in result.tool_calls] + turns_of(item)))
-            missing = [n for n in numeric_claims(result.answer) if n not in evidence]
-            if missing:
-                reason = f"数字在资料中找不到：{'、'.join(missing[:5])}"
+        evidence = [h.chunk.title+'\n'+h.chunk.section+'\n'+h.chunk.text for h in result.evidence]
+        reason = '；'.join(grounding_issues(result.answer, evidence, result.tool_calls))
     return {
         "id": item["id"], "type": item["type"], "turns": turns_of(item), "answer": result.answer,
         "reference": item.get("answer", ""), "correct": correct, "refused": result.refused,
@@ -113,7 +108,7 @@ def grade(item: dict, result) -> dict:
         "citation_precision": citation_precision, "tools_called": called, "expected_tools": sorted(expected_tools),
         "tool_ok": tool_ok, "unsupported": bool(reason), "unsupported_reason": reason,
         "retrieval_query": result.retrieval_query, "latency_s": round(result.latency_s, 2),
-        "llm_calls": result.llm_calls,
+        "llm_calls": result.llm_calls, "grounding": result.grounding,
     }
 
 
@@ -214,7 +209,7 @@ def write_summary(results_dir: Path = RESULTS_DIR) -> Path:
     runs = sorted(results_dir.glob("e2e_*.json"))
     if runs:
         lines += ["## 端到端问答", "",
-                  "| 后端 | 题数 | 答案准确率 | 引用正确率 | 引用精确率 | 工具调用正确率 | 无依据回答比例 | 拒答正确率 | 误拒率 | 平均耗时 | 平均模型调用次数 |",
+                  "| 后端 | 题数 | 答案准确率 | 引用来源命中率 | 引用精确率 | 工具调用正确率 | 无依据回答比例 | 拒答正确率 | 误拒率 | 平均耗时 | 平均模型调用次数 |",
                   "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
         by_type_rows = []
         for path in runs:

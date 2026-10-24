@@ -14,6 +14,7 @@ import time
 from dataclasses import dataclass, field
 
 from .config import Settings
+from .grounding import issues as grounding_issues, extractive_fallback, fee_answer
 from .prompts import NO_CONTEXT, SYSTEM_PROMPT
 from .retriever import Hit, Retriever
 from .textutil import extract_citations, is_refusal, strip_citations
@@ -61,6 +62,7 @@ class AgentResult:
     refused: bool = False
     latency_s: float = 0.0
     llm_calls: int = 0                      # 本轮调用大模型的次数（1 = 直接回答，每多一轮工具调用 +1）
+    grounding: dict = field(default_factory=dict)
 
     @property
     def cited_hits(self) -> list[Hit]:
@@ -126,12 +128,57 @@ class TelecomAgent:
         if not answer:
             answer = "抱歉，这个问题我暂时无法完成，请换个问法或联系人工客服。"
 
+        calculation = fee_answer(tool_log)
+        if calculation:
+            answer = calculation
+        evidence_text = [h.chunk.title+'\n'+h.chunk.section+'\n'+h.chunk.text for h in pool.hits]
+        problems = grounding_issues(answer, evidence_text, tool_log)
+        grounding = {'status': 'passed', 'initial_issues': problems, 'repair_calls': 0}
+        if calculation:
+            grounding['answer_source'] = 'deterministic_fee_tool'
+        if problems:
+            original = answer
+            cited_hits = [pool.get(n) for n in extract_citations(answer) if pool.get(n)]
+            expand = getattr(self.retriever, 'expand_sources', None)
+            if expand and cited_hits:
+                before = len(pool.hits)
+                pool.add(expand(cited_hits))
+                grounding['source_chunks_added'] = len(pool.hits)-before
+                evidence_text = [h.chunk.title+'\n'+h.chunk.section+'\n'+h.chunk.text for h in pool.hits]
+            messages[0] = {'role': 'system', 'content': SYSTEM_PROMPT.format(
+                plan_names='、'.join(self.plans.names), context=pool.render() or NO_CONTEXT)}
+            # Do not feed the incorrect draft back: it anchors both facts and stale citation IDs.
+            messages += [{'role': 'user', 'content': '发布前校验未通过：'+'；'.join(problems)+
+                          '。请重新核对已经提供的资料和工具结果，只更正回答，不再调用工具。'
+                          '已补充同源文档的其他章节。数字、单位和适用条件必须来自对应证据；'
+                          '引用必须指向包含该事实的具体章节编号，不可只引用同一文档的其他章节。'
+                          '回答用户的原问题：'+question}]
+            try:
+                llm_calls += 1
+                grounding['repair_calls'] = 1
+                revised = self.llm.chat(messages, [], context=pool.hits)
+                if revised.tool_calls or not revised.content.strip():
+                    raise ValueError('修订没有返回最终回答')
+                answer = revised.content.strip()
+                remaining = grounding_issues(answer, evidence_text, tool_log)
+                if remaining:
+                    grounding['remaining_issues'] = remaining
+                    raise ValueError('修订仍缺少证据')
+                grounding['status'] = 'repaired'
+            except Exception as error:
+                # A failed correction must not expose the unsupported draft or pollute history.
+                source_ids = {h.chunk.doc_id for h in cited_hits}
+                source_numbers = [i+1 for i,h in enumerate(pool.hits) if h.chunk.doc_id in source_ids]
+                answer = extractive_fallback(original, evidence_text, tool_log, source_numbers)
+                grounding.update(status='extractive_fallback', repair_error=type(error).__name__)
+
         cited = [n for n in extract_citations(answer) if pool.get(n)]
         # 历史里去掉引用编号：下一轮的资料编号会重新分配，旧编号会误导模型
         self.history += [{"role": "user", "content": question},
                          {"role": "assistant", "content": strip_citations(answer)}]
         return AgentResult(question, answer, query, list(pool.hits), cited, tool_log,
-                           refused=is_refusal(answer), latency_s=time.time() - t0, llm_calls=llm_calls)
+                           refused=is_refusal(answer), latency_s=time.time() - t0, llm_calls=llm_calls,
+                           grounding=grounding)
 
     def _run_tool(self, name: str, arguments: dict, pool: EvidencePool) -> str:
         if name == "search_knowledge":

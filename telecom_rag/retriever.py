@@ -94,6 +94,13 @@ class Retriever:
         return sorted(zip(candidates, scores), key=lambda x: x[1], reverse=True)
 
     # ---- 对外接口 ----
+    def expand_sources(self, hits: list[Hit], max_docs: int = 2, max_chunks: int = 8) -> list[Hit]:
+        """A partial section may omit the needed rule; read bounded context from cited documents."""
+        doc_ids = list(dict.fromkeys(hit.chunk.doc_id for hit in hits))[:max_docs]
+        expanded = [Hit(chunk, 0, False) for doc_id in doc_ids for chunk in self.store.chunks
+                    if chunk.doc_id == doc_id]
+        return expanded[:max_chunks]
+
     def search(self, query: str, top_k: int | None = None, mode: str = "hybrid_rerank",
                apply_threshold: bool = True) -> list[Hit]:
         top_k = top_k or self.settings.top_k

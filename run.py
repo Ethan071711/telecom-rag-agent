@@ -103,7 +103,7 @@ def cmd_eval(settings, retriever, agent, limit: int | None, retrieval_only: bool
         details = ev.run_e2e(agent, subset)
         metrics = ev.summarize(details)
         path = ev.save_e2e(settings, details, metrics)
-        print(f"\n  答案准确率 {ev._pct(metrics['answer_accuracy'])} | 引用正确率 {ev._pct(metrics['citation_accuracy'])}"
+        print(f"\n  答案准确率 {ev._pct(metrics['answer_accuracy'])} | 引用来源命中率 {ev._pct(metrics['citation_accuracy'])}"
               f" | 工具调用正确率 {ev._pct(metrics['tool_accuracy'])} | 无依据回答比例 {ev._pct(metrics['unsupported_rate'])}")
         print(f"  明细已保存：results/{path.name}")
     summary = ev.write_summary()

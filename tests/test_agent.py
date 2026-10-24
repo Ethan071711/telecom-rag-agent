@@ -41,22 +41,22 @@ def settings():
     return s
 
 
-def test_tool_loop_and_citations():
+def test_tool_loop_uses_computed_fee_instead_of_model_paraphrase():
     llm = ScriptedLLM([
         Reply(tool_calls=[ToolCall("c1", "calculate_fee", {"plan": "5G畅享59元", "data_gb": 75, "voice_minutes": 300})]),
-        Reply(content="本月合计 104 元 [2]。"),
+        Reply(content="本月合计 999 元 [2]。"),
     ])
     agent = TelecomAgent(FakeRetriever(), llm, settings())
     result = agent.ask("59元套餐用了75GB流量、300分钟要交多少钱？")
-    assert result.answer == "本月合计 104 元 [2]。"
+    assert '本月费用合计 104 元' in result.answer and '999' not in result.answer
     assert result.tool_calls[0]["name"] == "calculate_fee"
     assert '"合计(元)": 104' in result.tool_calls[0]["result"]
-    assert [h.chunk.doc_id for h in result.cited_hits] == ["01_plans_overview"]
+    assert result.grounding['answer_source']=='deterministic_fee_tool'
+    assert result.cited_hits==[]
     # 第二次调用时，模型能看到 assistant 的工具调用和工具结果
     roles = [m["role"] for m in llm.seen[1]]
     assert roles[-2:] == ["assistant", "tool"]
-    # 历史里的回答去掉了引用编号
-    assert agent.history[-1]["content"] == "本月合计 104 元 。"
+    assert agent.history[-1]["content"] == result.answer
 
 
 def test_followup_question_uses_previous_turn_for_retrieval():
@@ -69,9 +69,10 @@ def test_followup_question_uses_previous_turn_for_retrieval():
 
 
 def test_grade_flags_unsupported_numbers():
-    llm = ScriptedLLM([Reply(content="保号费 8 元/月，最长 12 个月 [1]。")])
+    from dataclasses import replace
+    llm = ScriptedLLM([Reply(content="保号费 5 元/月，最长 12 个月 [1]。")])
     agent = TelecomAgent(FakeRetriever(), llm, settings())
-    result = agent.ask("停机保号多少钱？")
+    result = replace(agent.ask("停机保号多少钱？"), answer="保号费 8 元/月，最长 12 个月 [1]。")
     item = {"id": "x", "type": "kb", "question": "停机保号多少钱？", "must_include": [["5元"]],
             "gold_docs": ["09_suspension"]}
     d = grade(item, result)
@@ -103,3 +104,51 @@ def test_offline_llm_routes_followup_to_previous_plan():
     reply = llm.chat(messages, [], context=[])
     assert reply.tool_calls[0].name == "calculate_fee"
     assert reply.tool_calls[0].arguments["plan"] == "5G畅享59元"
+
+
+def test_unsupported_answer_is_corrected_before_history_or_display():
+    llm = ScriptedLLM([Reply(content="保号费 8 元/月 [1]。"), Reply(content="保号费 5 元/月 [1]。")])
+    agent = TelecomAgent(FakeRetriever(), llm, settings())
+    result = agent.ask("停机保号多少钱？")
+    assert result.answer == "保号费 5 元/月 [1]。"
+    assert result.grounding['status'] == 'repaired' and result.llm_calls == 2
+    assert '8 元' not in agent.history[-1]['content']
+
+
+def test_repeated_bad_revision_falls_back_to_exact_source():
+    llm = ScriptedLLM([Reply(content="保号费 8 元/月 [1]。"), Reply(content="保号费 9 元/月 [1]。")])
+    result = TelecomAgent(FakeRetriever(), llm, settings()).ask("停机保号多少钱？")
+    assert result.grounding['status'] == 'extractive_fallback'
+    assert CHUNKS[0].text in result.answer and '8 元' not in result.answer and '9 元' not in result.answer
+
+
+def test_invalid_citation_and_failed_revision_do_not_escape():
+    class BrokenRepair(ScriptedLLM):
+        def chat(self, messages, tools, context=None):
+            if self.replies:
+                return self.replies.pop()
+            raise TimeoutError('repair unavailable')
+    result = TelecomAgent(FakeRetriever(), BrokenRepair([Reply(content='保号费 5 元 [999]。')]), settings()).ask('保号费？')
+    assert result.refused and not result.cited
+    assert result.grounding['status'] == 'extractive_fallback'
+
+
+def test_failed_tool_result_cannot_authorize_an_invented_bill():
+    llm = ScriptedLLM([
+        Reply(tool_calls=[ToolCall('x', 'calculate_fee', {'plan': '59元', 'data_gb': -3})]),
+        Reply(content='合计 88 元。'), Reply(content='合计 89 元。')])
+    result = TelecomAgent(FakeRetriever(), llm, settings()).ask('我的流量是负数，多少钱？')
+    assert result.refused and '88' not in result.answer and '89' not in result.answer
+
+
+def test_failed_answer_reads_other_sections_of_its_source_before_revision():
+    class Expandable(FakeRetriever):
+        def expand_sources(self, hits):
+            assert hits[0].chunk.doc_id == CHUNKS[0].doc_id
+            return [Hit(Chunk('09_suspension#1','09_suspension','停机保号','恢复',
+                              '恢复业务需要本人确认。'),0)]
+    llm=ScriptedLLM([Reply(content='保号费8元[1]。'),Reply(content='保号费5元[1]，恢复业务需要本人确认[3]。')])
+    result=TelecomAgent(Expandable(),llm,settings()).ask('保号费和恢复要求？')
+    assert result.grounding['source_chunks_added']==1
+    assert '恢复业务需要本人确认' in llm.seen[-1][0]['content']
+    assert result.cited==[1,3]
