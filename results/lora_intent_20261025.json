@@ -1,0 +1,1046 @@
+{
+  "measured_at_utc": "2026-10-25T06:17:03.016872+00:00",
+  "manifest": {
+    "config": {
+      "seed": 42,
+      "epochs": 6,
+      "batch_size": 4,
+      "gradient_accumulation": 4,
+      "learning_rate": 0.0002,
+      "max_length": 384,
+      "lora_r": 8,
+      "lora_alpha": 16,
+      "lora_dropout": 0.05,
+      "target_modules": [
+        "q_proj",
+        "v_proj"
+      ]
+    },
+    "base_model": "Qwen/Qwen3-0.6B",
+    "base_revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+    "prompt": "将用户的中文请求分类，只输出一个英文标签，不解释。\nknowledge：通信业务规则、办理方法、故障处理。\nplans：查询在售手机套餐的配置、资费或筛选列表。\nfee：用户已选定套餐，计算其实际用量对应的账单。\nrecommend：用户未选定套餐，按需求比较并推荐合适的手机套餐。\nunsupported：不在本客服范围的请求，含企业专线、物联网卡、卫星电话、座机及云盘业务。",
+    "dataset_sha256": "8f33dfeb984b4250c5474a019002f195fb656a069ba0a341264be93ee5d64f79",
+    "script_sha256": "33cb470a17ae5446621c6012e2a4664560fb62b1f96d0111e1aa0a60827a5c9a",
+    "split_counts": {
+      "train": {
+        "knowledge": 20,
+        "plans": 20,
+        "fee": 20,
+        "recommend": 20,
+        "unsupported": 20
+      },
+      "validation": {
+        "knowledge": 5,
+        "plans": 5,
+        "fee": 5,
+        "recommend": 5,
+        "unsupported": 5
+      },
+      "test": {
+        "knowledge": 10,
+        "plans": 10,
+        "fee": 10,
+        "recommend": 10,
+        "unsupported": 10
+      }
+    },
+    "frozen_before_evaluation_at_utc": "2026-10-25T06:16:32.437043+00:00"
+  },
+  "data_provenance": "Project-authored synthetic intent utterances; no customer data. Splits fixed before training. Not an independent real-user benchmark.",
+  "method": "LoRA supervised causal-LM fine-tuning; prompt/padding tokens masked; no quantization, no QLoRA claim",
+  "trainable_parameters": 1146880,
+  "total_parameters": 597196800,
+  "trainable_fraction": 0.0019204389574759945,
+  "optimizer_steps": 42,
+  "epoch_train_loss": [
+    0.6615562683343887,
+    0.2816305861249566,
+    0.11000074196257628,
+    0.03588451555609936,
+    0.02777801194228232,
+    0.0018961306020719348
+  ],
+  "training_seconds": 16.51521650000359,
+  "gpu_peak_allocated_bytes": 3365939200,
+  "device": "NVIDIA GeForce RTX 4070 Ti",
+  "packages": {
+    "torch": "2.11.0+cu128",
+    "transformers": "5.20.1",
+    "peft": "0.21.2",
+    "accelerate": "1.15.0"
+  },
+  "baseline": {
+    "validation": {
+      "metrics": {
+        "cases": 25,
+        "correct": 6,
+        "accuracy": 0.24,
+        "macro_f1": 0.18385093167701863,
+        "invalid_outputs": 3,
+        "confusion_matrix": {
+          "knowledge": {
+            "knowledge": 0,
+            "plans": 4,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 1,
+            "invalid": 0
+          },
+          "plans": {
+            "knowledge": 0,
+            "plans": 4,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 1,
+            "invalid": 0
+          },
+          "fee": {
+            "knowledge": 0,
+            "plans": 3,
+            "fee": 2,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "recommend": {
+            "knowledge": 0,
+            "plans": 5,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "unsupported": {
+            "knowledge": 0,
+            "plans": 2,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 3
+          }
+        }
+      },
+      "details": [
+        {
+          "text": "充值付款完成却没到账，应该找谁处理？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "开通漫游前有哪些手续？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "办理停机保号要走什么流程？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "丢失手机后怎么挂失号码？",
+          "label": "knowledge",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "宽带移机要准备哪些材料？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "想了解59元档的套餐详情。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "显示所有低于70元的5G资费。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "有没有只允许学生申请的手机套餐？",
+          "label": "plans",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "159元这一档给多少流量和通话？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "查询可以加四张副卡的套餐名称。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "59元档用了82GB和400分钟，这月多少钱？",
+          "label": "fee",
+          "prediction": "plans"
+        },
+        {
+          "text": "99元档流量135GB电话700分钟，算下合计。",
+          "label": "fee",
+          "prediction": "plans"
+        },
+        {
+          "text": "39元套餐额外用了10GB，实际应付多少？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "159元套餐配4张副卡没超量，请核算本月费用。",
+          "label": "fee",
+          "prediction": "plans"
+        },
+        {
+          "text": "校园卡29元，用了40GB和250分钟，账单多少？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "学生每月大约55GB，帮我找省钱的方案。",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "按我每月85GB和200分钟的需求，哪个套餐好？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "想降低月租又保留两张副卡，有什么建议？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "我每月只用3GB，应该选哪一档？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "根据150GB的用量，推荐总支出最低的套餐。",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "帮我看一下基金最近的走势。",
+          "label": "unsupported",
+          "prediction": "knowledge: 通信业务规则、办理方法、故障处理"
+        },
+        {
+          "text": "游戏服务器租赁每月多少钱？",
+          "label": "unsupported",
+          "prediction": "knowledge: 通信业务规则、办理方法、故障处理"
+        },
+        {
+          "text": "给公司的物联网设备办卡怎么报价？",
+          "label": "unsupported",
+          "prediction": "plans"
+        },
+        {
+          "text": "请帮忙写一封英文求职信。",
+          "label": "unsupported",
+          "prediction": "knowledge: plans"
+        },
+        {
+          "text": "查查明天上海到杭州的火车。",
+          "label": "unsupported",
+          "prediction": "plans"
+        }
+      ]
+    },
+    "test": {
+      "metrics": {
+        "cases": 50,
+        "correct": 16,
+        "accuracy": 0.32,
+        "macro_f1": 0.28248274919723987,
+        "invalid_outputs": 3,
+        "confusion_matrix": {
+          "knowledge": {
+            "knowledge": 0,
+            "plans": 6,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 4,
+            "invalid": 0
+          },
+          "plans": {
+            "knowledge": 0,
+            "plans": 9,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 1,
+            "invalid": 0
+          },
+          "fee": {
+            "knowledge": 3,
+            "plans": 3,
+            "fee": 4,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "recommend": {
+            "knowledge": 0,
+            "plans": 9,
+            "fee": 0,
+            "recommend": 1,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "unsupported": {
+            "knowledge": 0,
+            "plans": 4,
+            "fee": 0,
+            "recommend": 1,
+            "unsupported": 2,
+            "invalid": 3
+          }
+        }
+      },
+      "details": [
+        {
+          "text": "交了话费三小时还没反映到余额里，该怎么办？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "我想保留号码但先不用，有哪些办理步骤？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "宽带坏了两天，能申请费用减免吗？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "需要报销上个月的话费，什么时候能拿发票？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "手机掉了，现在第一步应该做什么？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "准备出国，号码怎么开漫游服务？",
+          "label": "knowledge",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "不换号码把宽带搬去新家，需要怎么申请？",
+          "label": "knowledge",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "原来的手机号不想用了，余额如何退还？",
+          "label": "knowledge",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "改低价套餐能在本月立即生效吗？",
+          "label": "knowledge",
+          "prediction": "plans"
+        },
+        {
+          "text": "补卡可以委托朋友代办吗？",
+          "label": "knowledge",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "先别推荐，给我看看39元档的资费明细。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "我想知道现在哪些手机套餐月租小于90块。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "帮我查一查99元那档有多少国内流量。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "有哪些5G套餐支持添加两张副卡？",
+          "label": "plans",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "请把校园卡的基本额度和收费列出来。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "有没有59元以内的套餐清单？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "只查套餐资料：159元档含多少分钟？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "把19元、39元、59元三种套餐内容列成表。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "目前哪些手机套餐要求全日制学生身份？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "查询流量不少于100GB的套餐名称及月费。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "已经选了59元档，这个月跑了78GB并通话360分钟，应付合计？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "按99元档计算：143GB、820分钟、一张副卡，给出账单。",
+          "label": "fee",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "我用39元档，流量用到95GB，要付多少钱？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "159元档有三张副卡且没有超量，算一下月账单。",
+          "label": "fee",
+          "prediction": "plans"
+        },
+        {
+          "text": "19元那种套餐用6.5GB和120分钟，费用怎么算？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "校园卡29元，这个月42GB和300分钟，需要交多少？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "现有59元档，国内通话650分钟而流量50GB，核算一下。",
+          "label": "fee",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "我已经办了99元档，带两张副卡，130GB加900分钟，合计多少？",
+          "label": "fee",
+          "prediction": "plans"
+        },
+        {
+          "text": "用159元档，260GB流量、1500分钟通话，求总费用。",
+          "label": "fee",
+          "prediction": "plans"
+        },
+        {
+          "text": "39元那档这月只用18GB和80分钟，有一张副卡，账单是多少？",
+          "label": "fee",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "我还没选套餐，每月78GB和360分钟，帮我挑最省的一种。",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "按143GB、820分钟及一张副卡的需求，哪档月支出最少？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "每个月95GB流量，想换一档更划算的套餐。",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "想办三张副卡，主号平时不怎么上网，推荐哪个方案？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "我有学生资格，每月42GB和300分钟，选哪档合适？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "根据650分钟通话和50GB流量，找个最经济的套餐。",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "流量用得很少但是想保留5G，怎么选资费更合理？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "老人只刷微信，每月4GB和60分钟，你建议办哪一档？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "我有两张副卡，每月全家130GB和900分钟，选哪个更便宜？",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "还没决定套餐，按260GB和1500分钟比较月费用最低的选项。",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "帮我查一下家用宽带之外的企业专线报价。",
+          "label": "unsupported",
+          "prediction": "plans"
+        },
+        {
+          "text": "你知道如何计算房贷月供吗？",
+          "label": "unsupported",
+          "prediction": "knowledge: fee"
+        },
+        {
+          "text": "我需要卫星手机的国际通话资费。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "给我推荐墨尔本的酒店。",
+          "label": "unsupported",
+          "prediction": "recommend"
+        },
+        {
+          "text": "工业传感器用的物联网SIM卡每月多少钱？",
+          "label": "unsupported",
+          "prediction": "plans"
+        },
+        {
+          "text": "帮我解一道微积分题。",
+          "label": "unsupported",
+          "prediction": "knowledge: 微积分"
+        },
+        {
+          "text": "我想查询云存储会员的年费。",
+          "label": "unsupported",
+          "prediction": "plans"
+        },
+        {
+          "text": "帮我分析一下股票的买入时机。",
+          "label": "unsupported",
+          "prediction": "knowledge: 通信业务规则、办理方法、故障处理"
+        },
+        {
+          "text": "给我查座机的月租和长途电话价格。",
+          "label": "unsupported",
+          "prediction": "plans"
+        },
+        {
+          "text": "我想了解储能电池的安装补贴。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        }
+      ]
+    }
+  },
+  "reloaded_adapter": {
+    "validation": {
+      "metrics": {
+        "cases": 25,
+        "correct": 22,
+        "accuracy": 0.88,
+        "macro_f1": 0.8791919191919192,
+        "invalid_outputs": 0,
+        "confusion_matrix": {
+          "knowledge": {
+            "knowledge": 5,
+            "plans": 0,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "plans": {
+            "knowledge": 0,
+            "plans": 4,
+            "fee": 1,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "fee": {
+            "knowledge": 0,
+            "plans": 0,
+            "fee": 5,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "recommend": {
+            "knowledge": 0,
+            "plans": 1,
+            "fee": 0,
+            "recommend": 4,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "unsupported": {
+            "knowledge": 1,
+            "plans": 0,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 4,
+            "invalid": 0
+          }
+        }
+      },
+      "details": [
+        {
+          "text": "充值付款完成却没到账，应该找谁处理？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "开通漫游前有哪些手续？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "办理停机保号要走什么流程？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "丢失手机后怎么挂失号码？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "宽带移机要准备哪些材料？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "想了解59元档的套餐详情。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "显示所有低于70元的5G资费。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "有没有只允许学生申请的手机套餐？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "159元这一档给多少流量和通话？",
+          "label": "plans",
+          "prediction": "fee"
+        },
+        {
+          "text": "查询可以加四张副卡的套餐名称。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "59元档用了82GB和400分钟，这月多少钱？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "99元档流量135GB电话700分钟，算下合计。",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "39元套餐额外用了10GB，实际应付多少？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "159元套餐配4张副卡没超量，请核算本月费用。",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "校园卡29元，用了40GB和250分钟，账单多少？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "学生每月大约55GB，帮我找省钱的方案。",
+          "label": "recommend",
+          "prediction": "plans"
+        },
+        {
+          "text": "按我每月85GB和200分钟的需求，哪个套餐好？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "想降低月租又保留两张副卡，有什么建议？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "我每月只用3GB，应该选哪一档？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "根据150GB的用量，推荐总支出最低的套餐。",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "帮我看一下基金最近的走势。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "游戏服务器租赁每月多少钱？",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "给公司的物联网设备办卡怎么报价？",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "请帮忙写一封英文求职信。",
+          "label": "unsupported",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "查查明天上海到杭州的火车。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        }
+      ]
+    },
+    "test": {
+      "metrics": {
+        "cases": 50,
+        "correct": 48,
+        "accuracy": 0.96,
+        "macro_f1": 0.9587301587301587,
+        "invalid_outputs": 0,
+        "confusion_matrix": {
+          "knowledge": {
+            "knowledge": 10,
+            "plans": 0,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "plans": {
+            "knowledge": 0,
+            "plans": 10,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "fee": {
+            "knowledge": 0,
+            "plans": 0,
+            "fee": 10,
+            "recommend": 0,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "recommend": {
+            "knowledge": 0,
+            "plans": 0,
+            "fee": 0,
+            "recommend": 10,
+            "unsupported": 0,
+            "invalid": 0
+          },
+          "unsupported": {
+            "knowledge": 1,
+            "plans": 1,
+            "fee": 0,
+            "recommend": 0,
+            "unsupported": 8,
+            "invalid": 0
+          }
+        }
+      },
+      "details": [
+        {
+          "text": "交了话费三小时还没反映到余额里，该怎么办？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "我想保留号码但先不用，有哪些办理步骤？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "宽带坏了两天，能申请费用减免吗？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "需要报销上个月的话费，什么时候能拿发票？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "手机掉了，现在第一步应该做什么？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "准备出国，号码怎么开漫游服务？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "不换号码把宽带搬去新家，需要怎么申请？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "原来的手机号不想用了，余额如何退还？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "改低价套餐能在本月立即生效吗？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "补卡可以委托朋友代办吗？",
+          "label": "knowledge",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "先别推荐，给我看看39元档的资费明细。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "我想知道现在哪些手机套餐月租小于90块。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "帮我查一查99元那档有多少国内流量。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "有哪些5G套餐支持添加两张副卡？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "请把校园卡的基本额度和收费列出来。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "有没有59元以内的套餐清单？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "只查套餐资料：159元档含多少分钟？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "把19元、39元、59元三种套餐内容列成表。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "目前哪些手机套餐要求全日制学生身份？",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "查询流量不少于100GB的套餐名称及月费。",
+          "label": "plans",
+          "prediction": "plans"
+        },
+        {
+          "text": "已经选了59元档，这个月跑了78GB并通话360分钟，应付合计？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "按99元档计算：143GB、820分钟、一张副卡，给出账单。",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "我用39元档，流量用到95GB，要付多少钱？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "159元档有三张副卡且没有超量，算一下月账单。",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "19元那种套餐用6.5GB和120分钟，费用怎么算？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "校园卡29元，这个月42GB和300分钟，需要交多少？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "现有59元档，国内通话650分钟而流量50GB，核算一下。",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "我已经办了99元档，带两张副卡，130GB加900分钟，合计多少？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "用159元档，260GB流量、1500分钟通话，求总费用。",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "39元那档这月只用18GB和80分钟，有一张副卡，账单是多少？",
+          "label": "fee",
+          "prediction": "fee"
+        },
+        {
+          "text": "我还没选套餐，每月78GB和360分钟，帮我挑最省的一种。",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "按143GB、820分钟及一张副卡的需求，哪档月支出最少？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "每个月95GB流量，想换一档更划算的套餐。",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "想办三张副卡，主号平时不怎么上网，推荐哪个方案？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "我有学生资格，每月42GB和300分钟，选哪档合适？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "根据650分钟通话和50GB流量，找个最经济的套餐。",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "流量用得很少但是想保留5G，怎么选资费更合理？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "老人只刷微信，每月4GB和60分钟，你建议办哪一档？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "我有两张副卡，每月全家130GB和900分钟，选哪个更便宜？",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "还没决定套餐，按260GB和1500分钟比较月费用最低的选项。",
+          "label": "recommend",
+          "prediction": "recommend"
+        },
+        {
+          "text": "帮我查一下家用宽带之外的企业专线报价。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "你知道如何计算房贷月供吗？",
+          "label": "unsupported",
+          "prediction": "knowledge"
+        },
+        {
+          "text": "我需要卫星手机的国际通话资费。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "给我推荐墨尔本的酒店。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "工业传感器用的物联网SIM卡每月多少钱？",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "帮我解一道微积分题。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "我想查询云存储会员的年费。",
+          "label": "unsupported",
+          "prediction": "plans"
+        },
+        {
+          "text": "帮我分析一下股票的买入时机。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "给我查座机的月租和长途电话价格。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        },
+        {
+          "text": "我想了解储能电池的安装补贴。",
+          "label": "unsupported",
+          "prediction": "unsupported"
+        }
+      ]
+    }
+  },
+  "test_accuracy_change": 0.6399999999999999,
+  "adapter_sha256": "9e88e1e40da6446007ad316bc262c44616d199ae8650af2b2549c329a08f904d",
+  "paid_api_calls": 0,
+  "limitations": [
+    "Small balanced synthetic utterances from the same authoring process, not a real-user generalization benchmark.",
+    "Fixed six epochs; no test-based checkpoint or hyperparameter selection. No production routing integration.",
+    "This is a new local experiment, not a historical internship result or QLoRA experiment."
+  ]
+}
